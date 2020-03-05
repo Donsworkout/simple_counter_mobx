@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
-import { decorate, observable, action } from 'mobx';
+import { observable, action } from 'mobx';
 import { observer } from 'mobx-react';
 
+// **** 최하단에 잇던 observer 가 이렇게 위로 올라옵니다.
+@observer
 class Counter extends Component {
-  number = 0;
+  @observable number = 0;
 
+  @action
   increase = () => {
     this.number++;
   }
 
+  @action
+  destroy = () => {
+    this.number = "BREAKED"
+  }
+
+  @action
+  restore = () => {
+    this.number = 0
+  }
+
+  @action
   decrease = () => {
     this.number--;
   }
@@ -19,15 +33,11 @@ class Counter extends Component {
         <h1>{this.number}</h1>
         <button onClick={this.increase}>+1</button>
         <button onClick={this.decrease}>-1</button>
+        <button onClick={this.destroy}>DESTROY</button>
+        <button onClick={this.restore}>RESTORE</button>
       </div>
     );
   }
 }
 
-decorate(Counter, {
-  number: observable,
-  increase: action,
-  decrease: action
-})
-
-export default observer(Counter);
+export default Counter;
